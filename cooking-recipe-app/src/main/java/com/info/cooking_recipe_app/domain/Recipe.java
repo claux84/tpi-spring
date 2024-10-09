@@ -54,6 +54,9 @@ public class Recipe {
     @ManyToOne
     private Category category;
 
+    
+    private Long servings;
+
 
 
 }

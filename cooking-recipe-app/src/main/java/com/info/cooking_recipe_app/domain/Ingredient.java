@@ -21,9 +21,9 @@ import lombok.Setter;
 public class Ingredient {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO)
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable =  false)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
