@@ -41,21 +41,29 @@ public class Recipe {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "recipe", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
-    private List<Step> stepsList;
+    @Column(length = 5000)
+    private String description;
 
-    
     @Enumerated(EnumType.STRING)
     private DifficultyEnum difficulty;
 
-    @Column(length = 5000)
-    private String description;
+    private Long servings;
 
     @ManyToOne
     private Category category;
 
+    @OneToMany(mappedBy = "recipe", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
+    private List<Step> stepsList;
+
     
-    private Long servings;
+    
+
+    
+
+    
+
+    
+    
 
 
 

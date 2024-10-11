@@ -1,6 +1,7 @@
 package com.info.cooking_recipe_app.domain;
 
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -10,6 +11,7 @@ import org.hibernate.type.SqlTypes;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -36,22 +38,24 @@ public class Step {
     @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID id;
 
-    @ManyToOne
-    private Recipe recipe;
-
-    @Column(length = 5000)
-    private String description;
-
     @Column(nullable = false)
-    private Integer estimatedTime;
-
-    @OneToMany( cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
-    @JoinColumn(name = "ingredient_id", referencedColumnName = "id")
-    private Map<Integer, Ingredient> ingredientsList;
+    private Long estimatedTime;
 
     @Column(nullable = false)
     private Boolean optional;
 
+    @Column(length = 5000)
+    private String description;
+
+    @ManyToOne
+    private Recipe recipe;
+
+    //@ElementCollection
+    @JoinColumn(name = "ingredient_id", referencedColumnName = "id")
+    @OneToMany( cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
+    private Map<Long, Ingredient> ingredientsList = new HashMap<>();
+
+    
 
 
 }
