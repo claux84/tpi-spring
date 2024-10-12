@@ -32,31 +32,29 @@ public class RecipeServiceImpl implements RecipeService{
     public List<RecipeDto> getAllRecipes() {
         
         return recipeRepository.findAll().stream()
-                                .map(recipe -> recipeMapper.RecipeToRecipeDto(recipe))
+                                .map(recipe -> recipeMapper.recipeToRecipeDto(recipe))
                                 .toList();
     }
 
     @Override
     public RecipeDto getRecipeById(UUID idRecipe) {
         Recipe recipe = recipeRepository.findById(idRecipe).orElseThrow(NoSuchElementException::new);
-        RecipeDto recipeDto = recipeMapper.RecipeToRecipeDto(recipe);
-        //return recipeMapper.RecipeToRecipeDto(recipeRepository.findById(UUID.fromString(idRecipe)).orElseThrow(Exception::new));
-        return recipeDto;
+        return recipeMapper.recipeToRecipeDto(recipe);
     }
 
     @Override
     public RecipeDto createRecipe(RecipeCreateDto recipeCreateDto) {
-        Recipe newRecipe = recipeMapper.RecipeCreateDtoToRecipe(recipeCreateDto);
+        Recipe newRecipe = recipeMapper.recipeCreateDtoToRecipe(recipeCreateDto);
         if (recipeCreateDto.category() != null) {
             Category category = categoryRepository.findById(recipeCreateDto.category()).orElseThrow(NoSuchElementException::new);
             newRecipe.setCategory(category);
         }
 
-        return recipeMapper.RecipeToRecipeDto(recipeRepository.save(newRecipe));
+        return recipeMapper.recipeToRecipeDto(recipeRepository.save(newRecipe));
     }
 
     @Override
-    public boolean deleteRecipe(UUID idRecipe) {
+    public boolean deleteRecipeById(UUID idRecipe) {
 
         if (recipeRepository.existsById(idRecipe)) {
             recipeRepository.deleteById(idRecipe);

@@ -14,6 +14,6 @@ public interface RecipeService {
 
     RecipeDto createRecipe(RecipeCreateDto recipeCreateDto);
 
-    boolean deleteRecipe(UUID idRecipe);
+    boolean deleteRecipeById(UUID idRecipe);
 
 }

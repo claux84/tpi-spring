@@ -55,8 +55,8 @@ public class RecipeController {
     }
 
     @DeleteMapping("/{idRecipe}")
-    public ResponseEntity<?> deleteRecipe(@PathVariable("idRecipe") UUID idRecipe){
-        boolean isRecipeDeleted = recipeService.deleteRecipe(idRecipe);
+    public ResponseEntity<?> deleteRecipeById(@PathVariable("idRecipe") UUID idRecipe){
+        boolean isRecipeDeleted = recipeService.deleteRecipeById(idRecipe);
         if (isRecipeDeleted) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {

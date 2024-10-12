@@ -11,12 +11,12 @@ import com.info.cooking_recipe_app.dto.step.StepInRecipeDto;
 @Mapper
 public interface StepMapper {
 
-    StepDto StepToStepDto(Step step);
+    StepDto stepToStepDto(Step step);
 
     @Mapping(target = "ingredientsList", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "recipe", ignore = true)
-    Step StepCreateDtoToStep(StepCreateDto stepCreateDto);
+    Step stepCreateDtoToStep(StepCreateDto stepCreateDto);
 
     StepInRecipeDto stepToStepInRecipeDto(Step step);
 }

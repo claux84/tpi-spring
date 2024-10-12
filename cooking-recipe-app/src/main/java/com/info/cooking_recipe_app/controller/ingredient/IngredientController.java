@@ -12,9 +12,12 @@ import lombok.AllArgsConstructor;
 import java.util.List;
 
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -34,6 +37,11 @@ public class IngredientController {
         return ingredientService.getAllIngredients();
     }
 
+    @GetMapping("/{idIngredient}")
+    public IngredientDto getIngredientById(@PathVariable("idIngredient") Long idingredient){
+        return ingredientService.getIngredientById(idingredient);
+    }
+
     @PostMapping
     public ResponseEntity<?> createIngredient(@RequestBody IngredientCreateDto ingredientCreateDto){
         IngredientDto ingredientDto = ingredientService.createIngredient(ingredientCreateDto);
@@ -41,6 +49,19 @@ public class IngredientController {
         return ResponseEntity.status(HttpStatus.CREATED)
                               .body(ingredientDto);
     }
+
+    @DeleteMapping("/{idIngredient}")
+    public ResponseEntity<?> deleteIngredientById(@PathVariable("idIngredient") Long idIngredient){
+        boolean isIngredientDeleted = ingredientService.deleteIngredientById(idIngredient);
+        if (isIngredientDeleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+
+
 
 
     

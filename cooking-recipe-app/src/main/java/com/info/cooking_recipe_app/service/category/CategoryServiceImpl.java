@@ -1,6 +1,8 @@
 package com.info.cooking_recipe_app.service.category;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
@@ -25,15 +27,32 @@ public class CategoryServiceImpl implements CategoryService{
 
         
         return categoryRepository.findAll().stream()
-                                    .map(category -> categoryMapper.CategoryToCategoryDto(category))
+                                    .map(category -> categoryMapper.categoryToCategoryDto(category))
                                     .toList();
     }
 
     @Override
-    public CategoryDto createCategory(CategoryCreateDto categoryCreateDto) {
-        Category newCategory = categoryMapper.CategoryCreateDtoToCategory(categoryCreateDto);
+    public CategoryDto getCategoryById(UUID idCCategory) {
+        Category category = categoryRepository.findById(idCCategory).orElseThrow(NoSuchElementException::new);
 
-        return categoryMapper.CategoryToCategoryDto(categoryRepository.save(newCategory));
+        return categoryMapper.categoryToCategoryDto(category);
+    }
+
+    @Override
+    public CategoryDto createCategory(CategoryCreateDto categoryCreateDto) {
+        Category newCategory = categoryMapper.categoryCreateDtoToCategory(categoryCreateDto);
+
+        return categoryMapper.categoryToCategoryDto(categoryRepository.save(newCategory));
+    }
+
+    @Override
+    public boolean deleteCategoryById(UUID idCategory) {
+        if (categoryRepository.existsById(idCategory)) {
+            categoryRepository.deleteById(idCategory);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

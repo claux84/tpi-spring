@@ -12,11 +12,11 @@ import com.info.cooking_recipe_app.dto.category.CategoryInRecipeDto;
 public interface CategoryMapper {
 
     
-    CategoryDto CategoryToCategoryDto( Category category);
+    CategoryDto categoryToCategoryDto( Category category);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "recipesList", ignore = true)
-    Category CategoryCreateDtoToCategory(CategoryCreateDto categoryCreateDto);
+    Category categoryCreateDtoToCategory(CategoryCreateDto categoryCreateDto);
     
     CategoryInRecipeDto categoryToCategoryInRecipeDto(Category category);
     

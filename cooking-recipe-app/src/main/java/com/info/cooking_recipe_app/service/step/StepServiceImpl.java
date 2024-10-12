@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -36,13 +36,19 @@ public class StepServiceImpl implements StepService{
     public List<StepDto> getAllSteps() {
     
         return stepRepository.findAll().stream()
-                            .map(step -> stepMapper.StepToStepDto(step))
+                            .map(step -> stepMapper.stepToStepDto(step))
                             .toList();
     }
 
     @Override
+    public StepDto getStepById(UUID stepId) {
+        Step step = stepRepository.findById(stepId).orElseThrow(NoSuchElementException::new);
+        return stepMapper.stepToStepDto(step);
+    }
+
+    @Override
     public StepDto createStep(StepCreateDto stepCreateDto) {
-        Step newStep = stepMapper.StepCreateDtoToStep(stepCreateDto);
+        Step newStep = stepMapper.stepCreateDtoToStep(stepCreateDto);
         if (stepCreateDto.recipeUuid()!= null) {
             Recipe recipe = recipeRepository.findById(stepCreateDto.recipeUuid()).orElseThrow(NoSuchElementException::new);
             newStep.setRecipe(recipe);
@@ -57,7 +63,17 @@ public class StepServiceImpl implements StepService{
    
         }
 
-        return stepMapper.StepToStepDto(stepRepository.save(newStep));
+        return stepMapper.stepToStepDto(stepRepository.save(newStep));
+    }
+
+    @Override
+    public boolean deleteStepById(UUID stepId) {
+        if (stepRepository.existsById(stepId)) {
+            stepRepository.deleteById(stepId);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

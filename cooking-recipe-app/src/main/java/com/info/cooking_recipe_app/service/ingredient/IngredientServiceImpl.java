@@ -1,6 +1,8 @@
 package com.info.cooking_recipe_app.service.ingredient;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+
 
 import org.springframework.stereotype.Service;
 
@@ -29,9 +31,26 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
+    public IngredientDto getIngredientById(Long idIngredient) {
+         Ingredient ingredient = ingredientRepository.findById(idIngredient).orElseThrow(NoSuchElementException::new);
+         return ingredientMapper.ingredientToIngredientDto(ingredient);
+    }
+
+    @Override
     public IngredientDto createIngredient(IngredientCreateDto ingredientCreateDto) {
         Ingredient newIngredient = ingredientMapper.ingredientCreateDtoToIngredient(ingredientCreateDto);
         return ingredientMapper.ingredientToIngredientDto(ingredientRepository.save(newIngredient));
+    }
+
+    @Override
+    public boolean deleteIngredientById(Long idIngredient) {
+        if (ingredientRepository.existsById(idIngredient)) {
+            ingredientRepository.deleteById(idIngredient);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 }
