@@ -23,6 +23,13 @@ public class IngredientServiceImpl implements IngredientService {
     private IngredientMapper ingredientMapper;
 
     @Override
+    public Ingredient findIngredientById(Long idIngredient) {
+        return ingredientRepository.findById(idIngredient).orElseThrow(NoSuchElementException::new);
+    }
+
+
+
+    @Override
     public List<IngredientDto> getAllIngredients() {
         
         return ingredientRepository.findAll().stream()
@@ -32,14 +39,24 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public IngredientDto getIngredientById(Long idIngredient) {
-         Ingredient ingredient = ingredientRepository.findById(idIngredient).orElseThrow(NoSuchElementException::new);
-         return ingredientMapper.ingredientToIngredientDto(ingredient);
+         return ingredientMapper.ingredientToIngredientDto(findIngredientById(idIngredient));
     }
 
     @Override
     public IngredientDto createIngredient(IngredientCreateDto ingredientCreateDto) {
         Ingredient newIngredient = ingredientMapper.ingredientCreateDtoToIngredient(ingredientCreateDto);
         return ingredientMapper.ingredientToIngredientDto(ingredientRepository.save(newIngredient));
+    }
+
+    @Override
+    public boolean updateIngredientById(Long idIngredient, IngredientCreateDto ingredientUpdate) {
+        if (ingredientRepository.existsById(idIngredient)) {
+            Ingredient ingredientFromDb = findIngredientById(idIngredient);
+            ingredientRepository.save(ingredientMapper.ingredientCreateDtoToUpdateCategory(ingredientUpdate, ingredientFromDb));
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

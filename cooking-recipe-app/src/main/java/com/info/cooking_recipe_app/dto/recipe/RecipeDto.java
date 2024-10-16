@@ -14,7 +14,8 @@ public record RecipeDto(UUID id,
                         DifficultyEnum difficulty,
                         Long servings,
                         CategoryInRecipeDto category,
-                        List<StepInRecipeDto> stepsList
+                        List<StepInRecipeDto> stepsList,
+                        Long totalPreparationTime
                         ) {
 
 }

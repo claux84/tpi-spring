@@ -18,6 +18,8 @@ import com.info.cooking_recipe_app.service.category.CategoryService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -48,6 +50,19 @@ public class CategoryController {
         return ResponseEntity
                         .status(HttpStatus.CREATED)
                         .body(categoryDto);
+    }
+
+    @PutMapping("/{idCategory}")
+    public ResponseEntity<?> putMethodName(@PathVariable("idCategory") UUID idCategory, @RequestBody CategoryCreateDto categoryUpdate) {
+        boolean isCategoryUpdated = categoryService.updateCategoryById(idCategory, categoryUpdate);
+        if (isCategoryUpdated) {
+            CategoryDto categoryUpdated = getCategoryById(idCategory);
+            return ResponseEntity.ok().body(categoryUpdated);
+        } else {
+            return ResponseEntity.notFound().build();
+            
+        }
+        
     }
 
     @DeleteMapping("/{idCategory}")

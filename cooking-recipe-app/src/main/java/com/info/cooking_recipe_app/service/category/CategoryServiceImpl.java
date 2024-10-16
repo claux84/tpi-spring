@@ -22,20 +22,28 @@ public class CategoryServiceImpl implements CategoryService{
 
     CategoryMapper categoryMapper;
 
+
+    @Override
+    public Category findCategoryById(UUID idCategory) {
+        return categoryRepository.findById(idCategory).orElseThrow(NoSuchElementException::new);
+    }
+
+
     @Override
     public List<CategoryDto> getAllCategories() {
 
-        
         return categoryRepository.findAll().stream()
                                     .map(category -> categoryMapper.categoryToCategoryDto(category))
                                     .toList();
     }
 
     @Override
-    public CategoryDto getCategoryById(UUID idCCategory) {
-        Category category = categoryRepository.findById(idCCategory).orElseThrow(NoSuchElementException::new);
+    public CategoryDto getCategoryById(UUID idCategory) {
+        Category category = findCategoryById(idCategory);
+        CategoryDto  categoryDto = categoryMapper.categoryToCategoryDto(category );
+        
 
-        return categoryMapper.categoryToCategoryDto(category);
+        return categoryDto;
     }
 
     @Override
@@ -43,6 +51,20 @@ public class CategoryServiceImpl implements CategoryService{
         Category newCategory = categoryMapper.categoryCreateDtoToCategory(categoryCreateDto);
 
         return categoryMapper.categoryToCategoryDto(categoryRepository.save(newCategory));
+    }
+
+    @Override
+    public boolean updateCategoryById(UUID idCategory,  CategoryCreateDto categoryUpdate) {
+
+        if (categoryRepository.existsById(idCategory)) {
+            Category categoryFromDb = findCategoryById(idCategory);
+            categoryRepository.save(categoryMapper.categoryCreateDtoUpdateCategory(categoryUpdate, categoryFromDb)) ;
+            return true;
+            
+        } else {
+            return false;
+        }
+   
     }
 
     @Override

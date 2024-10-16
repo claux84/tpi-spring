@@ -1,5 +1,6 @@
 package com.info.cooking_recipe_app.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,6 +38,6 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
-    private List<Recipe> recipesList;
+    private List<Recipe> recipesList = new ArrayList<>();
 
 }

@@ -1,10 +1,12 @@
 package com.info.cooking_recipe_app.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.springframework.util.CollectionUtils;
 
 import com.info.cooking_recipe_app.domain.enums.DifficultyEnum;
 
@@ -52,8 +54,21 @@ public class Recipe {
     @ManyToOne
     private Category category;
 
-    @OneToMany(mappedBy = "recipe", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
-    private List<Step> stepsList;
+    @OneToMany(mappedBy = "recipe", cascade = {CascadeType.REMOVE, CascadeType.MERGE , CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    private List<Step> stepsList = new ArrayList<>() ;
+
+    public Long getTotalPreparationTime(){
+        Long totalPreparationTime = 0L;
+            if (!CollectionUtils.isEmpty(this.getStepsList())) {
+            for (Step step: this.getStepsList()) {
+                if (!step.getOptional()) {
+                    totalPreparationTime += step.getEstimatedTime();
+                }
+            }
+        } 
+       return totalPreparationTime;
+    }
+
 
     
     

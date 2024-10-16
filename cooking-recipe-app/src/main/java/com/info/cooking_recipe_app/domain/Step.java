@@ -9,16 +9,14 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.MapKeyJoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,10 +47,9 @@ public class Step {
     @ManyToOne
     private Recipe recipe;
 
-    //@ElementCollection
-    @JoinColumn(name = "ingredient_id", referencedColumnName = "id")
-    @OneToMany( cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
-    private Map<Long, Ingredient> ingredientsList = new HashMap<>();
+    @ElementCollection
+    @MapKeyJoinColumn(name = "ingredientId",referencedColumnName = "id") 
+    private Map<Ingredient, Long> ingredientsQuantity = new HashMap<>();
 
     
 

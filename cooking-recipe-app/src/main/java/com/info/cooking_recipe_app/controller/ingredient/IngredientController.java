@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -49,6 +51,20 @@ public class IngredientController {
         return ResponseEntity.status(HttpStatus.CREATED)
                               .body(ingredientDto);
     }
+
+    @PutMapping("/{idIngredient}")
+    public ResponseEntity<?> putMethodName(@PathVariable("idIngredient") Long idIngredient, @RequestBody IngredientCreateDto ingredientUpdate) {
+        boolean isIngredientUpdated = ingredientService.updateIngredientById(idIngredient, ingredientUpdate);
+        if (isIngredientUpdated) {
+            IngredientDto ingredientUpdated = getIngredientById(idIngredient);
+            return ResponseEntity.ok().body(ingredientUpdated);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
+    
 
     @DeleteMapping("/{idIngredient}")
     public ResponseEntity<?> deleteIngredientById(@PathVariable("idIngredient") Long idIngredient){

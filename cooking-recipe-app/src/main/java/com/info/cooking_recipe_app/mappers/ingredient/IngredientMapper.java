@@ -1,7 +1,11 @@
 package com.info.cooking_recipe_app.mappers.ingredient;
 
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
 import com.info.cooking_recipe_app.domain.Ingredient;
 
@@ -18,4 +22,8 @@ public interface IngredientMapper {
     Ingredient ingredientCreateDtoToIngredient(IngredientCreateDto ingredientCreateDto);
 
     IngredientInStepDto ingredientToIngredientInStepDto(Ingredient ingredient);
+
+    @BeanMapping(nullValuePropertyMappingStrategy  = NullValuePropertyMappingStrategy.IGNORE, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+    Ingredient ingredientCreateDtoToUpdateCategory( IngredientCreateDto categoryUpdate, @MappingTarget Ingredient ingredientFromDb);
+
 }

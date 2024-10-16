@@ -31,8 +31,5 @@ public class Ingredient {
     @Column(length = 5000)
     private String description;
 
-    //@ManyToOne
-    //@JoinColumn(name = "ingredients-amount")
-    //private Step step;
 
 }

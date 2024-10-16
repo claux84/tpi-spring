@@ -7,6 +7,6 @@ public record StepCreateDto(Long estimatedTime,
                             Boolean optional,
                             String description,
                             UUID recipeUuid,
-                            Map<Long, Long> ingredientsList) {
+                            Map<Long, Long> ingredientsQuantity) {
 
 }

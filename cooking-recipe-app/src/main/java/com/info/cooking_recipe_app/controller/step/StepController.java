@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.info.cooking_recipe_app.dto.step.StepCreateDto;
 import com.info.cooking_recipe_app.dto.step.StepDto;
+import com.info.cooking_recipe_app.dto.step.StepUpdateDto;
 import com.info.cooking_recipe_app.service.step.StepService;
 
 import lombok.AllArgsConstructor;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -49,6 +52,18 @@ public class StepController {
         return ResponseEntity
                         .status(HttpStatus.CREATED)
                         .body(stepDto);
+    }
+
+    @PutMapping("/{idStep}")
+    public ResponseEntity<?> putMethodName(@PathVariable("idStep") UUID idStep, @RequestBody StepUpdateDto stepUpdate) {
+        boolean isStepUpdated = stepService.updateStepById(idStep, stepUpdate);
+        if (isStepUpdated) {
+            StepDto stepUpdated = getStepById(idStep);
+            return ResponseEntity.ok().body(stepUpdated);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+        
     }
 
     @DeleteMapping("/{idStep}")

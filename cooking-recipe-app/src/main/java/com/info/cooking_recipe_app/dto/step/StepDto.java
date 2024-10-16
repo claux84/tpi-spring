@@ -12,6 +12,6 @@ public record StepDto(UUID id,
                       Boolean optional,
                       String description,
                       RecipeInCategoryDto recipe,
-                      HashMap<Long,IngredientDto> ingredientsList) {
+                      HashMap<IngredientDto,Long> ingredientsQuantity) {
 
 }

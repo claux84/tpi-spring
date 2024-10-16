@@ -1,10 +1,13 @@
 package com.info.cooking_recipe_app.controller.recipe;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.info.cooking_recipe_app.dto.recipe.RecipeCreateDto;
 import com.info.cooking_recipe_app.dto.recipe.RecipeDto;
+import com.info.cooking_recipe_app.dto.recipe.RecipeIngredientDto;
+import com.info.cooking_recipe_app.dto.recipe.RecipeUpdateDto;
 import com.info.cooking_recipe_app.service.recipe.RecipeService;
 
 import lombok.AllArgsConstructor;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -32,7 +37,7 @@ public class RecipeController {
 
     private RecipeService recipeService;
 
-    @GetMapping
+    @GetMapping()
     public List<RecipeDto> getAllRecipes() {
         return recipeService.getAllRecipes();
     }
@@ -41,9 +46,15 @@ public class RecipeController {
     public RecipeDto getRecipeById(@PathVariable("idRecipe") UUID idRecipe) {
         return recipeService.getRecipeById(idRecipe);
     }
-    
 
-    @PostMapping
+    @GetMapping("/ingredient")
+    public RecipeIngredientDto getIngredientsInRecipeById(
+                @RequestParam(required = true, name = "idRecipe") UUID idRecipe,
+                @RequestParam(required = false, name = "idStep")UUID idStep) {
+        return recipeService.getIngredientsInRecipeById(idRecipe, idStep);
+    }
+
+    @PostMapping()
     public ResponseEntity<?> createRecipe(@RequestBody RecipeCreateDto recipeCreateDto) {
 
         RecipeDto recipeDto = recipeService.createRecipe(recipeCreateDto);
@@ -52,6 +63,19 @@ public class RecipeController {
         return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(recipeDto);
+    }
+
+    @PutMapping("/{idRecipe}")
+    public ResponseEntity<?> putMethodName(@PathVariable("idRecipe") UUID idRecipe, @RequestBody RecipeUpdateDto recipeUpdateDto) {
+        boolean isRecipeUdated = recipeService.updateRecipeById(idRecipe, recipeUpdateDto);
+        if (isRecipeUdated) {
+            RecipeDto recipeUpdated = getRecipeById(idRecipe);
+            return ResponseEntity.ok().body(recipeUpdated);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+        
+        
     }
 
     @DeleteMapping("/{idRecipe}")
