@@ -28,7 +28,7 @@ public class Ingredient {
     @Column(nullable = false)
     private String name;
 
-    @Column(length = 5000)
+    @Column(length = 500)
     private String description;
 
 

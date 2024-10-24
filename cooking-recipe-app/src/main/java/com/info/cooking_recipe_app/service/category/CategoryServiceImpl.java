@@ -2,13 +2,14 @@ package com.info.cooking_recipe_app.service.category;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.NoSuchElementException;
+
 
 import org.springframework.stereotype.Service;
 
 import com.info.cooking_recipe_app.domain.Category;
 import com.info.cooking_recipe_app.dto.category.CategoryCreateDto;
 import com.info.cooking_recipe_app.dto.category.CategoryDto;
+import com.info.cooking_recipe_app.exceptions.ResourceNotFoundException;
 import com.info.cooking_recipe_app.mappers.category.CategoryMapper;
 import com.info.cooking_recipe_app.repository.category.CategoryRepository;
 
@@ -25,7 +26,8 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public Category findCategoryById(UUID idCategory) {
-        return categoryRepository.findById(idCategory).orElseThrow(NoSuchElementException::new);
+        return categoryRepository.findById(idCategory)
+                                 .orElseThrow(() -> new ResourceNotFoundException("La categoria con el id: "+ idCategory + " no fue encontrada"));
     }
 
 

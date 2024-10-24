@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.info.cooking_recipe_app.dto.ingredient.IngredientCreateDto;
 import com.info.cooking_recipe_app.dto.ingredient.IngredientDto;
 import com.info.cooking_recipe_app.service.ingredient.IngredientService;
+import com.info.cooking_recipe_app.validator.groups.ValidatorGroups.Create;
 
+import jakarta.validation.Valid;
+import jakarta.validation.groups.Default;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -15,6 +18,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,12 +44,12 @@ public class IngredientController {
     }
 
     @GetMapping("/{idIngredient}")
-    public IngredientDto getIngredientById(@PathVariable("idIngredient") Long idingredient){
-        return ingredientService.getIngredientById(idingredient);
+    public IngredientDto getIngredientById(@PathVariable("idIngredient") Long idIngredient){
+        return ingredientService.getIngredientById(idIngredient);
     }
 
     @PostMapping
-    public ResponseEntity<?> createIngredient(@RequestBody IngredientCreateDto ingredientCreateDto){
+    public ResponseEntity<?> createIngredient(@Validated({Create.class, Default.class}) @RequestBody IngredientCreateDto ingredientCreateDto){
         IngredientDto ingredientDto = ingredientService.createIngredient(ingredientCreateDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -53,7 +57,7 @@ public class IngredientController {
     }
 
     @PutMapping("/{idIngredient}")
-    public ResponseEntity<?> putMethodName(@PathVariable("idIngredient") Long idIngredient, @RequestBody IngredientCreateDto ingredientUpdate) {
+    public ResponseEntity<?> updateIngredientById(@PathVariable("idIngredient") Long idIngredient, @Valid @RequestBody IngredientCreateDto ingredientUpdate) {
         boolean isIngredientUpdated = ingredientService.updateIngredientById(idIngredient, ingredientUpdate);
         if (isIngredientUpdated) {
             IngredientDto ingredientUpdated = getIngredientById(idIngredient);

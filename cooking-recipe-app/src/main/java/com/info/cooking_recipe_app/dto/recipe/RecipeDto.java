@@ -16,6 +16,6 @@ public record RecipeDto(UUID id,
                         CategoryInRecipeDto category,
                         List<StepInRecipeDto> stepsList,
                         Long totalPreparationTime
-                        ) {
+                        ) {  
 
 }

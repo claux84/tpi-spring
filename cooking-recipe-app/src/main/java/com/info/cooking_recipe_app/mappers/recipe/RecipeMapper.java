@@ -43,6 +43,4 @@ public interface RecipeMapper {
     @Mapping(target = "stepsList", source = "stepList")
     RecipeIngredientDto RecipeToRecipeIngredientDto(Recipe recipe, List<StepPlusIngredientsInRecipeDto> stepList);
 
-    
-    
 }

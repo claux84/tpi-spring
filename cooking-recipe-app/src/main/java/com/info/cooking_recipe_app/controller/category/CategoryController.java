@@ -16,6 +16,8 @@ import com.info.cooking_recipe_app.dto.category.CategoryCreateDto;
 import com.info.cooking_recipe_app.dto.category.CategoryDto;
 import com.info.cooking_recipe_app.service.category.CategoryService;
 
+
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -45,7 +47,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCategory(@RequestBody CategoryCreateDto categoryCreateDto){
+    public ResponseEntity<?> createCategory( @Valid @RequestBody CategoryCreateDto categoryCreateDto){
         CategoryDto categoryDto = categoryService.createCategory(categoryCreateDto);
         return ResponseEntity
                         .status(HttpStatus.CREATED)
@@ -53,7 +55,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{idCategory}")
-    public ResponseEntity<?> putMethodName(@PathVariable("idCategory") UUID idCategory, @RequestBody CategoryCreateDto categoryUpdate) {
+    public ResponseEntity<?> putMethodName(@PathVariable("idCategory") UUID idCategory, @Valid @RequestBody CategoryCreateDto categoryUpdate) {
         boolean isCategoryUpdated = categoryService.updateCategoryById(idCategory, categoryUpdate);
         if (isCategoryUpdated) {
             CategoryDto categoryUpdated = getCategoryById(idCategory);

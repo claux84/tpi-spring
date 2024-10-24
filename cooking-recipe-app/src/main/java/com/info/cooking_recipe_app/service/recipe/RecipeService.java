@@ -3,8 +3,6 @@ package com.info.cooking_recipe_app.service.recipe;
 import java.util.List;
 import java.util.UUID;
 
-import org.mapstruct.Named;
-
 import com.info.cooking_recipe_app.domain.Recipe;
 import com.info.cooking_recipe_app.dto.recipe.RecipeCreateDto;
 import com.info.cooking_recipe_app.dto.recipe.RecipeDto;

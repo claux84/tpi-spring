@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 
 import jakarta.persistence.Column;
@@ -15,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyJoinColumn;
 import lombok.AllArgsConstructor;
@@ -31,7 +30,6 @@ public class Step {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID id;
 
@@ -41,14 +39,15 @@ public class Step {
     @Column(nullable = false)
     private Boolean optional;
 
-    @Column(length = 5000)
+    @Column(length = 500)
     private String description;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Recipe recipe;
 
     @ElementCollection
-    @MapKeyJoinColumn(name = "ingredientId",referencedColumnName = "id") 
+    @MapKeyJoinColumn(name = "ingredientId", referencedColumnName = "id") 
     private Map<Ingredient, Long> ingredientsQuantity = new HashMap<>();
 
     

@@ -1,6 +1,7 @@
 package com.info.cooking_recipe_app.service.step;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.info.cooking_recipe_app.domain.Step;
@@ -21,6 +22,8 @@ public interface StepService {
     boolean updateStepById(UUID idStep, StepUpdateDto stepUpdateDto);
 
     boolean deleteStepById(UUID idStep);
+
+    Step saveStep(Step step, UUID idRecipe, Map<Long, Long> ingredientsQuantity);
 
     
 

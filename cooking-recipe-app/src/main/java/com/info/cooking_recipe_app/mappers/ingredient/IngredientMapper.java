@@ -25,5 +25,4 @@ public interface IngredientMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy  = NullValuePropertyMappingStrategy.IGNORE, unmappedTargetPolicy = ReportingPolicy.IGNORE)
     Ingredient ingredientCreateDtoToUpdateCategory( IngredientCreateDto categoryUpdate, @MappingTarget Ingredient ingredientFromDb);
-
 }

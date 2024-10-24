@@ -1,7 +1,7 @@
 package com.info.cooking_recipe_app.service.ingredient;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+
 
 
 import org.springframework.stereotype.Service;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.info.cooking_recipe_app.domain.Ingredient;
 import com.info.cooking_recipe_app.dto.ingredient.IngredientCreateDto;
 import com.info.cooking_recipe_app.dto.ingredient.IngredientDto;
+import com.info.cooking_recipe_app.exceptions.ResourceNotFoundException;
 import com.info.cooking_recipe_app.mappers.ingredient.IngredientMapper;
 import com.info.cooking_recipe_app.repository.ingredient.IngredientRepository;
 
@@ -24,7 +25,8 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Ingredient findIngredientById(Long idIngredient) {
-        return ingredientRepository.findById(idIngredient).orElseThrow(NoSuchElementException::new);
+        return ingredientRepository.findById(idIngredient)
+                                   .orElseThrow(() -> new ResourceNotFoundException("El ingrediente con el id: "+ idIngredient + " no fue encontrado"));
     }
 
 

@@ -29,5 +29,5 @@ public interface CategoryMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy  = NullValuePropertyMappingStrategy.IGNORE, unmappedTargetPolicy = ReportingPolicy.IGNORE)
     Category categoryCreateDtoUpdateCategory(CategoryCreateDto categoryUpdate, @MappingTarget Category categoryFromDb);
-    
+
 }

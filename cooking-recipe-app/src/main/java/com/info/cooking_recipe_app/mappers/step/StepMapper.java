@@ -38,4 +38,8 @@ public interface StepMapper {
 
     StepPlusIngredientsInRecipeDto StepToStepPlusIngredientInRecipeDto( Step step);
 
+    @Mapping(target = "ingredientsQuantity", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "recipe", ignore = true)
+    Step stepCreateInRecipeToStep(StepUpdateDto stepUpdateDto);
 }

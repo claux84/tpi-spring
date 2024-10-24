@@ -7,6 +7,7 @@ import com.info.cooking_recipe_app.dto.step.StepDto;
 import com.info.cooking_recipe_app.dto.step.StepUpdateDto;
 import com.info.cooking_recipe_app.service.step.StepService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class StepController {
     
     
     @PostMapping
-    public ResponseEntity<?> createStep(@RequestBody StepCreateDto stepCreateDto) {
+    public ResponseEntity<?> createStep(@Valid @RequestBody StepCreateDto stepCreateDto) {
         StepDto stepDto = stepService.createStep(stepCreateDto);
         
         return ResponseEntity
@@ -55,7 +56,7 @@ public class StepController {
     }
 
     @PutMapping("/{idStep}")
-    public ResponseEntity<?> putMethodName(@PathVariable("idStep") UUID idStep, @RequestBody StepUpdateDto stepUpdate) {
+    public ResponseEntity<?> updateStepById(@PathVariable("idStep") UUID idStep, @Valid @RequestBody StepUpdateDto stepUpdate) {
         boolean isStepUpdated = stepService.updateStepById(idStep, stepUpdate);
         if (isStepUpdated) {
             StepDto stepUpdated = getStepById(idStep);
