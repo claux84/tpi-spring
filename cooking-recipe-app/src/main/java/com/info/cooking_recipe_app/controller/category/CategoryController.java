@@ -41,7 +41,7 @@ public class CategoryController {
 
     @Operation(
             summary = "API REST para mostrar todas las categorias",
-            description = "API REST para mostrar todas las categorias"
+            description = "API REST que permite mostrar todas las categorias"
     )
     @ApiResponses({
             @ApiResponse(
@@ -61,7 +61,7 @@ public class CategoryController {
 
     @Operation(
             summary = "API REST para mostrar una categoria",
-            description = "API REST para mostrar una categoria y sus recetas dado el id de la categoria"
+            description = "API REST que permite mostrar una categoria y sus recetas dado su id"
     )
     @ApiResponses({
             @ApiResponse(
@@ -127,7 +127,7 @@ public class CategoryController {
             )
     })
     @PutMapping("/{idCategory}")
-    public ResponseEntity<?> putMethodName(@PathVariable("idCategory") UUID idCategory, @Valid @RequestBody CategoryCreateDto categoryUpdate) {
+    public ResponseEntity<?> updateCategoryById(@PathVariable("idCategory") UUID idCategory, @Valid @RequestBody CategoryCreateDto categoryUpdate) {
         boolean isCategoryUpdated = categoryService.updateCategoryById(idCategory, categoryUpdate);
         if (isCategoryUpdated) {
             CategoryDto categoryUpdated = getCategoryById(idCategory);

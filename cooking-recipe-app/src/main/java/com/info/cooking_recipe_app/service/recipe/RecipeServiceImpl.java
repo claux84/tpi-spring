@@ -3,7 +3,7 @@ package com.info.cooking_recipe_app.service.recipe;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.NoSuchElementException;
+
 
 
 import org.springframework.stereotype.Service;
@@ -111,7 +111,7 @@ public class RecipeServiceImpl implements RecipeService{
             if (idRecipe.equals(stepFromDB.getRecipe().getId())) {
                 stepList.add(stepMapper.StepToStepPlusIngredientInRecipeDto(stepFromDB));
             } else {
-                throw new NoSuchElementException("El paso indicado no pertenece a la receta enviada");
+                throw new ResourceNotFoundException("El paso indicado no pertenece a la receta enviada");
             }
         } else {
             stepList = recipeFromDb.getStepsList().stream().map(step -> stepMapper.StepToStepPlusIngredientInRecipeDto(step)).toList();

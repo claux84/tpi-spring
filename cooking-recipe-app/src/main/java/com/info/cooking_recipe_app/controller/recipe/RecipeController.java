@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import com.info.cooking_recipe_app.dto.errors.ErrorDto;
 import com.info.cooking_recipe_app.dto.recipe.RecipeCreateDto;
 import com.info.cooking_recipe_app.dto.recipe.RecipeDto;
 import com.info.cooking_recipe_app.dto.recipe.RecipeIngredientDto;
@@ -11,6 +13,11 @@ import com.info.cooking_recipe_app.dto.recipe.RecipeUpdateDto;
 import com.info.cooking_recipe_app.service.recipe.RecipeService;
 import com.info.cooking_recipe_app.validator.groups.ValidatorGroups.Create;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.groups.Default;
 import lombok.AllArgsConstructor;
@@ -41,16 +48,70 @@ public class RecipeController {
 
     private RecipeService recipeService;
 
+
+    @Operation(
+            summary = "API REST para mostrar todas las recetas",
+            description = "API REST que permite mostrar todas las recetas"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Las recetas estan presentadas",
+                    content = @Content(
+                        schema = @Schema(implementation = RecipeDto.class)
+                        )
+            )
+    })
     @GetMapping()
     public List<RecipeDto> getAllRecipes() {
         return recipeService.getAllRecipes();
     }
 
+    @Operation(
+            summary = "API REST para mostrar una receta",
+            description = "API REST que permite mostrar una receta y sus pasos dado el id de la receta"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "La receta ha sido encontrada",
+                    content = @Content(
+                        schema = @Schema(implementation = RecipeDto.class)
+                        )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No se encontro la receta",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorDto.class)
+                    )
+            )
+    })
     @GetMapping("/{idRecipe}")
     public RecipeDto getRecipeById(@PathVariable("idRecipe") UUID idRecipe) {
         return recipeService.getRecipeById(idRecipe);
     }
 
+    @Operation(
+            summary = "API REST para mostrar los ingredientes de una receta",
+            description = "API REST que permite mostrar los ingredientes de una receta o los ingredientes de uno de los pasos de una receta"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                responseCode = "200",
+                description = "La receta ha sido encontrada",
+                content = @Content(
+                    schema = @Schema(implementation = RecipeIngredientDto.class)
+                )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No se encontro el recurso",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorDto.class)
+                    )
+            )
+    })
     @GetMapping("/ingredient")
     public RecipeIngredientDto getIngredientsInRecipeById(
                 @RequestParam(required = true, name = "idRecipe") UUID idRecipe,
@@ -58,6 +119,26 @@ public class RecipeController {
         return recipeService.getIngredientsInRecipeById(idRecipe, idStep);
     }
 
+    @Operation(
+            summary = "API REST para crear una receta",
+            description = "API REST que permite crear una receta"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "La receta fue creada",
+                    content = @Content(
+                        schema = @Schema(implementation = RecipeDto.class)
+                        )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No se encontro la categoria",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorDto.class)
+                    )
+            )
+    })
     @PostMapping()
     public ResponseEntity<?> createRecipe(@Validated({Default.class, Create.class }) @RequestBody RecipeCreateDto recipeCreateDto) {
 
@@ -69,6 +150,26 @@ public class RecipeController {
                     .body(recipeDto);
     }
 
+    @Operation(
+            summary = "API REST para actualizar una receta",
+            description = "API REST que permite actualizar una receta dada su id"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "La receta fue actualizada",
+                    content = @Content(
+                        schema = @Schema(implementation = RecipeDto.class)
+                        )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No se encontro la receta",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorDto.class)
+                    )
+            )
+    })
     @PutMapping("/{idRecipe}")
     public ResponseEntity<?> updateRecipeById(@PathVariable("idRecipe") UUID idRecipe, @Valid @RequestBody RecipeUpdateDto recipeUpdateDto) {
         boolean isRecipeUdated = recipeService.updateRecipeById(idRecipe, recipeUpdateDto);
@@ -82,6 +183,23 @@ public class RecipeController {
         
     }
 
+    @Operation(
+            summary = "API REST para eliminar una receta",
+            description = "API REST que permite eliminar una receta dado su id"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "La receta fue eliminada"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No se encontro la receta",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorDto.class)
+                    )
+            )
+    })
     @DeleteMapping("/{idRecipe}")
     public ResponseEntity<?> deleteRecipeById(@PathVariable("idRecipe") UUID idRecipe){
         boolean isRecipeDeleted = recipeService.deleteRecipeById(idRecipe);

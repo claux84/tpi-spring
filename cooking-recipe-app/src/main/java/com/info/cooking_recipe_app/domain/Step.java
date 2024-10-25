@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -30,6 +31,7 @@ public class Step {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID id;
 

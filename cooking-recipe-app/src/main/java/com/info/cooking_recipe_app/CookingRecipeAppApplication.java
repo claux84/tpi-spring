@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.info.License;
 				),
 				license = @License(
 						name = "Apache 2.0",
-						url = "https://www.claudioramirez.com.ar"
+						url = "https://www.apache.org/licenses/LICENSE-2.0"
 				)
 		),
 		externalDocs = @ExternalDocumentation(

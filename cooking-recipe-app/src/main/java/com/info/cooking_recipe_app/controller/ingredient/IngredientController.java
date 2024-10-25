@@ -145,7 +145,7 @@ public class IngredientController {
 
     @Operation(
             summary = "API REST para eliminar un ingrediente",
-            description = "API REST que permite eliminar un ingredeinte dado su id"
+            description = "API REST que permite eliminar un ingrediente dado su id"
     )
     @ApiResponses({
             @ApiResponse(
