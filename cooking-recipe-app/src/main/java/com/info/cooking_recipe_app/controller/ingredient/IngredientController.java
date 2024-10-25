@@ -3,11 +3,17 @@ package com.info.cooking_recipe_app.controller.ingredient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.info.cooking_recipe_app.dto.errors.ErrorDto;
 import com.info.cooking_recipe_app.dto.ingredient.IngredientCreateDto;
 import com.info.cooking_recipe_app.dto.ingredient.IngredientDto;
 import com.info.cooking_recipe_app.service.ingredient.IngredientService;
 import com.info.cooking_recipe_app.validator.groups.ValidatorGroups.Create;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.groups.Default;
 import lombok.AllArgsConstructor;
@@ -38,16 +44,63 @@ public class IngredientController {
    
     private IngredientService ingredientService;
 
+    @Operation(
+            summary = "API REST para mostrar todas los ingredientes",
+            description = "API REST que permite mostrar todos los ingredientes"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Los ingredientes estan presentados",
+                    content = @Content(
+                        schema = @Schema(implementation = IngredientDto.class)
+                        )
+            )
+    })
     @GetMapping
     public List<IngredientDto> getAllIngredients() {
         return ingredientService.getAllIngredients();
     }
 
+    @Operation(
+            summary = "API REST para mostrar un ingrediente",
+            description = "API REST que permite mostrar un ingrediente dado su id"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "El ingrediente ha sido encontrado",
+                    content = @Content(
+                        schema = @Schema(implementation = IngredientDto.class)
+                        )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No se encontro el ingrediente",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorDto.class)
+                    )
+            )
+    })
     @GetMapping("/{idIngredient}")
     public IngredientDto getIngredientById(@PathVariable("idIngredient") Long idIngredient){
         return ingredientService.getIngredientById(idIngredient);
     }
 
+    @Operation(
+        summary = "API REST para crear un ingrediente",
+        description = "API REST que permite crear un ingrediente"
+    )
+    @ApiResponses({
+        @ApiResponse(
+                responseCode = "201",
+                description = "El ingrediente fue creado",
+                content = @Content(
+                    schema = @Schema(implementation = IngredientDto.class)
+                    )
+        ),
+        
+    })
     @PostMapping
     public ResponseEntity<?> createIngredient(@Validated({Create.class, Default.class}) @RequestBody IngredientCreateDto ingredientCreateDto){
         IngredientDto ingredientDto = ingredientService.createIngredient(ingredientCreateDto);
@@ -56,6 +109,26 @@ public class IngredientController {
                               .body(ingredientDto);
     }
 
+    @Operation(
+            summary = "API REST para actualizar un ingrediente",
+            description = "API REST que permite actualizar el ingrediente dado su id"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "El ingrediente fue actualizada",
+                    content = @Content(
+                        schema = @Schema(implementation = IngredientDto.class)
+                        )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No se encontro el ingrediente",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorDto.class)
+                    )
+            )
+    })
     @PutMapping("/{idIngredient}")
     public ResponseEntity<?> updateIngredientById(@PathVariable("idIngredient") Long idIngredient, @Valid @RequestBody IngredientCreateDto ingredientUpdate) {
         boolean isIngredientUpdated = ingredientService.updateIngredientById(idIngredient, ingredientUpdate);
@@ -70,6 +143,23 @@ public class IngredientController {
 
     
 
+    @Operation(
+            summary = "API REST para eliminar un ingrediente",
+            description = "API REST que permite eliminar un ingredeinte dado su id"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "El ingrediente fue eliminado"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No se encontro el ingrediente",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorDto.class)
+                    )
+            )
+    })
     @DeleteMapping("/{idIngredient}")
     public ResponseEntity<?> deleteIngredientById(@PathVariable("idIngredient") Long idIngredient){
         boolean isIngredientDeleted = ingredientService.deleteIngredientById(idIngredient);

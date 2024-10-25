@@ -2,8 +2,7 @@ package com.info.cooking_recipe_app.exceptions;
 
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+
 
 
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.info.cooking_recipe_app.dto.errors.ErrorDto;
-import com.info.cooking_recipe_app.dto.errors.GenericError;
+
 import com.info.cooking_recipe_app.dto.errors.ValidationErrorDto;
 
 @ControllerAdvice
@@ -27,15 +26,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
 
-        var errorList = ex.getFieldErrors().stream()
-                .map( fieldError -> {
-                    Map<String, String> errorMap = new HashMap<>();
-                    errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
-                    return errorMap;
-                        }
-                ).toList();
-        
-        var errorList2= ex.getFieldErrors().stream()
+        var errorList= ex.getFieldErrors().stream()
                 .map(fieldError -> new ValidationErrorDto(
                                                           HttpStatus.BAD_REQUEST.value(),
                                                           LocalDateTime.now(),
@@ -45,13 +36,9 @@ public class GlobalExceptionHandler {
                 .toList();
 
 
-        GenericError errorsDto = new GenericError(
-                "Error en la creacion de la entidad",
-                errorList);
-
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(errorList2);
+                .body(errorList);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
